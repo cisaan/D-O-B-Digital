@@ -5,6 +5,18 @@
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 LOGFILE="/Users/zeeshann/Desktop/Pychrm/auto_git_push.log"
+ERRORLOG="/Users/zeeshann/Desktop/Pychrm/launchagent_error.log"
+OUTPUTLOG="/Users/zeeshann/Desktop/Pychrm/launchagent_output.log"
+
+# Delete log files if larger than 5MB
+MAXSIZE=5242880
+
+for file in "$LOGFILE" "$ERRORLOG" "$OUTPUTLOG"; do
+  if [ -f "$file" ] && [ $(stat -f%z "$file") -gt $MAXSIZE ]; then
+    rm "$file"
+    echo "Deleted large log file: $file" >> "$LOGFILE"
+  fi
+done
 
 echo "Starting Python Project Auto Push..." >> "$LOGFILE" 2>&1
 date >> "$LOGFILE" 2>&1
@@ -38,11 +50,5 @@ git push origin main >> "$LOGFILE" 2>&1 || {
   echo "git push failed" >> "$LOGFILE"
   exit 1
 }
-
-# Rotate log if bigger than 5MB
-MAXSIZE=5242880
-if [ -f "$LOGFILE" ] && [ $(stat -f%z "$LOGFILE") -gt $MAXSIZE ]; then
-  mv "$LOGFILE" "${LOGFILE}.old"
-fi
 
 echo "Python project auto push complete ✅" >> "$LOGFILE"
