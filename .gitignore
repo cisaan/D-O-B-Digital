@@ -1,0 +1,19 @@
+# Python virtual environments and bytecode
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# IDE and operating-system files
+.idea/
+.vscode/
+.DS_Store
+
+# Logs and generated runtime data
+*.log
+*.db
+trial_info.json
+
+# Build artefacts
+build/
+dist/
